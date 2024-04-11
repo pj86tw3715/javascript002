@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script type="text/javascript" src="./comlib.js"></script>
+</head>
+<body>        
+    <script type="text/javascript">
+        while((a==b) || (b==c) || (a==c)){
+            var a=rand(1,10);
+            var b=rand(1,10);
+            var c=rand(1,10);
+        }    
+        var str="a="+a+", b="+b+", c="+c+"<br>判斷結果:";
+        document.write("<h1>判斷三變數的大小</h1>");        
+          if((a>b) && (a>c)){
+              if (b>c){
+                  document.write("<h3>"+str+"a>b>c。</h3>");
+              }else{
+                  document.write("<h3>"+str+"a>c>b。</h3>");
+              }
+          }else if((b>c) && (b>c)){
+              if (a>c){
+                  document.write("<h3>"+str+"b>a>c。</h3>");
+              }else{
+                  document.write("<h3>"+str+"b>c>a。</h3>");
+              }
+          }else if(b>a){
+              document.write("<h3>"+str+"c>b>a。</h3>");
+          }else{
+              document.write("<h3>"+str+"c>a>b。</h3>");
+          }        
+    </script>
+    <hr>
+    <script type="text/javascript">
+        var a=rand(1,10);
+        var b=rand(1,10);
+        var c=rand(1,10);
+        var str="a="+a+", b="+b+", c="+c+"<br>判斷結果:";
+        document.write("<h1>判斷三變數的大小</h1>");
+        if ((a==b) || (b==c) || (a==c)){
+            document.write("<h3>"+str+"三變數中有數值相等,故不判斷。</h3>");
+        }else{
+          if((a>b) && (a>c)){
+              if (b>c){
+                  document.write("<h3>"+str+"a>b>c。</h3>");
+              }else{
+                  document.write("<h3>"+str+"a>c>b。</h3>");
+              }
+          }else if((b>c) && (b>c)){
+              if (a>c){
+                  document.write("<h3>"+str+"b>a>c。</h3>");
+              }else{
+                  document.write("<h3>"+str+"b>c>a。</h3>");
+              }
+          }else if(b>a){
+              document.write("<h3>"+str+"c>b>a。</h3>");
+          }else{
+              document.write("<h3>"+str+"c>a>b。</h3>");
+          }
+        }
+    </script>
+    <hr>
+    <p id="lottery" name="lottery" style="font-size:100px;">1</p>
+    <button type="button" id="btn01" name="btn01" onclick="getPrize();">抽奬</button>
+    <script type="text/javascript">
+        var count=0;
+        function getPrize(){
+            if(count<30){
+                let lottery=document.getElementById("lottery");  //取出HTML內容<p id="lottery"...>1</p> 當中的1字串
+                lottery.innerText=rand(1,4); //innerText 則是實際出現在畫面上的文字內容
+                window.setTimeout("getPrize()",100); //setTimeout(JavaScript 函数, 等待的毫秒数)
+                count++;
+            }else{
+                count=0;
+                switch(lottery.innerText){
+                    case "1":
+                        window.alert("恭喜!抽中第1奬:禮卷10000元");
+                        break;
+                    case "2":
+                        window.alert("恭喜!抽中第2奬:禮卷1000元");
+                        break;
+                    case "3":
+                        window.alert("恭喜!抽中第3奬:禮卷500元");
+                        break;
+                    default:
+                        window.alert("恭喜!抽中普奬:禮卷100元");
+                }                 
+            }
+        }
+    </script>
+    <hr>
+    <script type="text/javascript">
+        var grade=rand(1,99);
+        document.write("<h1>測試成績:"+grade+"</h1>");       
+        if(grade>=80){
+            document.write("<h3>測試成績判斷為A:取得4.0積分</h3>");
+        }else if(grade>=70){
+            document.write("<h3>測試成績判斷為B:取得3.0積分</h3>");
+        }else{
+            document.write("<h3>測試成績判斷為C:取得2.0積分</h3>");
+        }
+    </script>
+    <hr>
+    <script type="text/javascript">
+        var tall=rand(115,130);
+        document.write("<h1>測試身高:"+tall+"cm</h1>");       
+        if(tall>120){
+            document.write("<h3>身高"+tall+"需購買全票</h3>");
+        }else{
+            document.write("<h3>身高"+tall+"需購買半票</h3>");
+        }
+    </script>
+    <hr>
+    <script type="text/javascript">
+        var score=rand(1,99);
+        document.write("<h1>測試成績:"+score+"</h1>");
+        /*if(score<60){
+            document.write("<h3>測試成績判斷為不及格</h3>");
+        }
+        if(score>=60){
+            document.write("<h3>測試成績判斷為及格</h3>");
+        }*/
+        if(score<60){
+            document.write("<h3>測試成績判斷為不及格</h3>");
+        }else{
+            document.write("<h3>測試成績判斷為及格</h3>");
+        }
+    </script>
+    <hr>
+    <script type="text/javascript">
+        //宣告陣列與設定值的方式
+        var newCar=["Sentra","Teana","Tiida","X-Trail"];
+        var nowCar=new Array("Livina","March","Murano","Quest");
+        var oldCar=new Array();
+            oldCar[0]="Altima";
+            oldCar[1]="Bluebird";
+            oldCar[2]="Cabstar";
+            oldCar[3]="Cefiro";
+        var testCar=new Array();
+            testCar[0]="test0";
+            testCar[3]="test3";
+        console.log(newCar);
+        console.log(nowCar);
+        console.log(oldCar);
+        newCar.push("Juke"); //在陣列的最後端插入資料
+        console.log(newCar);
+        oldCar[3]="all new Cefiro";
+        console.log(oldCar);
+        oldCar.splice(0,1); //在陣列索引第0個開始,刪除1筆資料
+        console.log(oldCar);
+        oldCar.splice(2,0,"cube"); //在陣列索引第2個開始,刪除0筆資料,且增加一筆料
+        console.log(oldCar);
+        console.log(testCar);
+        testCar.splice(1,2); //在陣列索引第1個開始,刪除2筆資料
+        console.log(testCar);
+    </script>
+</body>
+</html>

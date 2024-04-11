@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script type="text/javascript">
+        var a; //宣告a為變數,
+        var a01=100;  //宣告a01為變數,並設定值
+        document.write("<h1>設定變數a,沒有設定值為"+a+"</h1>");
+        document.write("<h1>設定變數a01="+a01+"</h1>");
+        document.write("<hr>");
+        showVar();
+        //b01=b01+200;  函數區域內宣告變數b01在外部測試計算累加200
+        //document.write("<h1>b01="+b01+"</h1>");
+
+        //const c01="c01這是常數宣告值,宣告後無法更改。";
+        //document.write("<h1>"+c01+"</h1>");
+        var c01="c01這是變數宣告值,宣告後可更改。";
+        document.write("<h1>"+c01+"</h1>");
+        c01="更改c01這個變數值的內容文字";
+        document.write("<h1>"+c01+"</h1>"); //測試在更改後印出c01變數
+
+        function showVar(){
+            a01=a01+200;
+            document.write("<h1>在函數內使用變數a01+200="+a01+"</h1>");
+            let b01=800;  //let函數區域內宣告使用變數
+            document.write("<h1>在函數內使用let宣告變數b01="+b01+"</h1>");
+        }
+    </script>
+    <script type="text/javascript">
+        document.write("這是測試文字,此文字將會顯示在網路上! <br>");
+        document.write("2024/03/19 10號 鄭惠文")
+    </script>
+</body>
+</html>

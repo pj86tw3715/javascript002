@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript" src="./comlib.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        //for迴圈
+        var total = 0;
+        var Accumulate = 0;
+        for (let i = 6; i <= 15; i++) {
+            Accumulate = total;
+            total = total + i;
+            var si = 0;
+            if (i % 2 == 1) {
+                si = "<span style='color:blue;'>" + "*" + "</span>" + "<span style='color:blue;'>" + i + "</span>";
+            } else {
+                si = i;
+            }
+            document.write("|" + Accumulate + "+" + si + "=" + total + "|")
+        }
+        document.write("<br>for遞增迴圈測試從6加到15=" + total + "</br>")
+    </script>
+    <hr>
+    <h1 id="clock" name="clock">--</h1>
+    <script type="text/javascript">
+        var hour = 0;
+        var min = rand(0, 59);
+        var sec = rand(0, 59);
+        //單行條件判斷
+        var str = (hour >= 12) ? "PM" : "AM";
+        var hour = (hour > 12) ? hour - 12 : hour;
+        // var hour = (hour < 10) ? "0"+hour  : hour;
+        // var min = (min < 10) ? "0"+min  : min;
+        // var sec = (sec < 10) ? "0"+sec  : sec;
+        document.write("目前時間為" + hour + str);
+        let clock = document.getElementById('clock');
+        clock.innerText = "產生亂數時間" + hour + ":" + min + ":" + sec + str;
+        clock.innerText = "產生亂數時間" + addzero(hour) + ":" + addzero(min) + ":" + addzero(sec) + str;
+        Timehit();
+        function Timehit() {
+            if (sec == 0) {
+                sec = 59;
+                if (min == 0) {
+                    min = 59;
+                    hour--;
+                    if (hour <= 0) {
+                        hour += 24;
+                    }
+                    if (hour === 24) {
+                        hour = 0;
+                    }
+                } else {
+                    min--;
+                }
+            } else {
+                sec--;
+            }
+            clock.innerText = "產生亂數時間" + addzero(hour) + ":" + addzero(min) + ":" + addzero(sec) + str;
+            window.setTimeout("Timehit()", 1000);
+        }
+    </script>
+    <hr>
+    <script type="text/javascript">
+        var name = "林小強";
+        var seat = "10";
+        var seat1 = rand(1, 30);
+        var age = 47;
+        var tall = 157.5;
+        var student = false;
+        var interset = null; //興趣
+        var want;  //希望在js課得到什麼
+        var interset1 = "看電影、聽音樂、看書"; //興趣
+        var want1 = "熟悉程式語言的特色,並且希望能應用自如。";  //希望在js課得到什麼
+        var score = [70, 80, 90]; //國、英、數成績
+        var mobile = {  //所攜帶的手機規格
+            tel: "09123415678",
+            os: "android",
+            brand: "SONY",
+            size: "6.5inch"
+        };
+        //可自訂範圍min到max之間的亂數產生函數
+        //min亂數最小範圍,max亂數最大範圍
+        function rand(min, max) {
+            //math.random(),JS產生0-1之間的隨機亂數,包含0不包含1之間的值
+            //math.floor()函式會回傳無條件捨去的整數,如12.3則回傳12。
+            //math.ceil()函式會回傳無條件進位整數,如1.03則回傳2。
+            min = Math.ceil(min); //收到傳入min參數先設定無條件進位
+            max = Math.floor(max); //收到傳入max參數先設定無條件捨去
+            console.log(Math.random());
+            result = Math.floor(Math.random() * (max - min + 1) + min); //產生一個min到max之間的亂數
+            console.log(result); //印出console檢查
+            return result; //將結果回傳主程式
+            /*
+              例rand(5,10);程式執行情形
+              return 最小返回5,Math.floor(0*(10-5+1)+5)
+              return 最大返回10,Math.floor(0.9*(10-5+1)+5)
+            */
+        }
+    </script>
+    <table border="1">
+        <tr>
+            <td>姓名</td>
+            <td>
+                <script>document.write(name);</script>
+            </td>
+            <td>
+                <script>document.write(typeof (name));</script>
+            </td>
+        </tr>
+        <tr>
+            <td>座號</td>
+            <td>
+                <script>document.write(seat);</script>
+            </td>
+            <td>
+                <script>document.write(typeof (seat));</script>
+            </td>
+        </tr>
+        <tr bgcolor="yellow">
+            <td>座號(利用亂數產生)</td>
+            <td>
+                <script>document.write(seat1);</script>
+            </td>
+            <td>
+                <script>document.write(typeof (seat1));</script>
+            </td>
+        </tr>
+        <tr>
+            <td>年齡</td>
+            <td>
+                <script>document.write(age);</script>
+            </td>
+            <td>
+                <script>document.write(typeof (age));</script>
+            </td>
+        </tr>
+        <tr>
+            <td>身高</td>
+            <td>
+                <script>document.write(tall);</script>
+            </td>
+            <td>
+                <script>document.write(typeof (tall));</script>
+            </td>
+        </tr>
+        <tr>
+            <td>是否在學</td>
+            <td>
+                <script>document.write(student);</script>
+            </td>
+            <td>
+                <script>document.write(typeof (student));</script>
+            </td>
+        </tr>
+        <tr>
+            <td>興趣(null空值,歸物件)</td>
+            <td>
+                <script>document.write(interset);</script>
+            </td>
+            <td>
+                <script>document.write(typeof (interset));</script>
+            </td>
+        </tr>
+        <tr bgcolor="yellow">
+            <td>興趣(內容更新)</td>
+            <td>
+                <script>document.write(interset1);</script>
+            </td>
+            <td>
+                <script>document.write(typeof (interset1));</script>
+            </td>
+        </tr>
+        <tr>
+            <td>希望在js課得到什麼(未設定,即未定義)</td>
+            <td>
+                <script>document.write(want);</script>
+            </td>
+            <td>
+                <script>document.write(typeof (want));</script>
+            </td>
+        </tr>
+        <tr bgcolor="yellow">
+            <td>希望在js課得到什麼(內容更新)</td>
+            <td>
+                <script>document.write(want1);</script>
+            </td>
+            <td>
+                <script>document.write(typeof (want1));</script>
+            </td>
+        </tr>
+        <tr>
+            <td>成績(陣列歸物件)</td>
+            <td>
+                <table border="1" bordercolor="green">
+                    <tr>
+                        <td>國文</td>
+                        <td>英文</td>
+                        <td>數學</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <script>document.write(score[0]);</script>
+                        </td>
+                        <td>
+                            <script>document.write(score[1]);</script>
+                        </td>
+                        <td>
+                            <script>document.write(score[2]);</script>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+            <td>
+                <script>document.write(typeof (score));</script>
+            </td>
+        </tr>
+        <tr>
+            <td>使用手機規格(object即物件)</td>
+            <td>
+                <table border="1" bordercolor="blue">
+                    <tr>
+                        <td>電話</td>
+                        <td>系統</td>
+                        <td>品牌</td>
+                        <td>大小</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <script>document.write(mobile.tel);</script>
+                        </td>
+                        <td>
+                            <script>document.write(mobile.os);</script>
+                        </td>
+                        <td>
+                            <script>document.write(mobile.brand);</script>
+                        </td>
+                        <td>
+                            <script>document.write(mobile.size);</script>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+            <td>
+                <script>document.write(typeof (mobile));</script>
+            </td>
+        </tr>
+    </table>
+</body>
+
+</html>

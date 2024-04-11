@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Click Image to Check Checkbox</title>
+<style>
+  /* 样式可以根据需要进行修改 */
+  #checkbox-label {
+    display: inline-block;
+    cursor: pointer;
+  }
+  #checkbox-img {
+    width: 20px;
+    height: 20px;
+  }
+</style>
+</head>
+<body>
+
+<label id="checkbox-label" onclick="toggleCheckbox()">
+  <input type="checkbox" id="checkbox" style="display: none;">
+  <img id="checkbox-img" src="./kLOTTO.png" alt="Unchecked">
+</label>
+
+<script>
+function toggleCheckbox() {
+  var checkbox = document.getElementById('checkbox');
+  var img = document.getElementById('checkbox-img');
+  
+  if (checkbox.checked) {
+    checkbox.checked = false;
+    img.src = "./kLOTTO.png"; // 替换成未选中状态的图片路径
+    img.alt = "./kLOTTO.png"; // 可选，替换成未选中状态的图片的替代文本
+  } else {
+    checkbox.checked = true;
+    img.src = "./kLOTTO.png"; // 替换成选中状态的图片路径
+    img.alt = "Checked"; // 可选，替换成选中状态的图片的替代文本
+  }
+}
+</script>
+
+</body>
+</html>
