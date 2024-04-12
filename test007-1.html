@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>學生成績測試</title>
+    <style type="text/css">
+        table {
+            text-align: center;
+        }
+
+        .greenT {
+            color: green;
+
+        }
+
+        .redT {
+            color: red;
+        }
+    </style>
+    <script type="text/javascript" src="comlib.js"></script>
+</head>
+
+<body>
+    <table id="scorelist" border="1">
+        <tr>
+            <td colspan="10">學生成績測試資料產生</td>
+        </tr>
+        <tr>
+            <td>姓名</td>
+            <td>國文</td>
+            <td>英文</td>
+            <td>數學</td>
+            <td>計算機概論</td>
+            <td>工廠實習</td>
+            <td>微積分</td>
+            <td>體育</td>
+            <td>平時成績</td>
+            <td>排名</td>
+        </tr>
+    </table>
+    <script type="text/javascript">
+        var fail = new Array(0, 0, 0, 0, 0, 0, 0)
+        var scoreSheet = new Array();
+        var average = new Array();
+        for (let i = 0; i < 30; i++) {
+            scoreSheet.push(Array("student" + (i + 1), rand(1, 100), rand(1, 100), rand(1, 100), rand(1, 100), rand(1, 100), rand(1, 100), rand(1, 100),0,0))
+
+            for (let j = 1; j <= 7; j++) {
+                if (scoreSheet[i][j] < 60) {
+                    fail[j - 1]++;
+                }
+            }
+        }
+        ave();
+        let average2 = Array.from(average);
+        average2.sort(function(a,b){return a-b;});
+        var average3 =average2.toReversed();
+        var bug=0;
+        
+        for (let i = 0; i < 30; i++) {
+            var averindex=0;
+            var lastRow = document.getElementById("scorelist").rows.length; //取得表格列總列數
+            var tableTr = document.getElementById("scorelist").insertRow(lastRow); //新增一列
+            for (j = 0; j < 10; j++) {
+                 td = tableTr.insertCell(tableTr.cells.length); //在新列新增一欄TD
+                if(j==8){
+                    td.innerHTML=average[i];
+                }else if (j<9){
+                    td.innerHTML = scoreSheet[i][j];
+                }else if(j==9){
+                    averindex = average3.indexOf(average[i]);
+                    if(averindex[i]=averindex[i+1]){
+                        td.innerHTML =averindex[i];
+                        bug =bug+1;
+                    }else{
+                        bug=0;
+                        td.innerHTML =averindex+bug+1;
+                    }
+                }
+            }
+        }
+        var lastRow = document.getElementById("scorelist").rows.length; //取得表格列總列數
+        var tableTr = document.getElementById("scorelist").insertRow(lastRow); //新增一列
+        td = tableTr.insertCell(tableTr.cells.length);
+        td.innerHTML = "不及格成績";
+        let i = 0;
+        while (i < 7) {
+            td = tableTr.insertCell(tableTr.cells.length); //在新列新增一欄TD
+            td.innerHTML = fail[i];
+            i++
+        }
+        td = tableTr.insertCell(tableTr.cells.length);
+        td.innerHTML = "--";
+        td = tableTr.insertCell(tableTr.cells.length);
+        td.innerHTML = "--";
+        function scoreFormat (score){
+            if (score<60) {
+                        td.setAttribute("class", "bgNone");
+                    } else if (j == 5) {
+                        td.setAttribute("class", "bgRed");
+                    } else if (i == 5) {
+                        td.setAttribute("class", "bgYellow");
+                    }
+                
+        }
+        function ave() {
+            for (let i = 0; i <30; i++) {
+                let count = 0;
+                for (let j = 1; j < 8; j++) {
+                    count = count+scoreSheet[i][j];
+                }
+                average.push((count /7).toFixed(2));
+            }
+        }
+        
+    </script>
+</body>
+
+</html>

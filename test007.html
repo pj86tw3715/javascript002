@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>學生成績測試</title>
+    <style type="text/css">
+        table {
+            text-align: center;
+        }
+
+        .greenT {
+            color: green;
+
+        }
+
+        .redT {
+            color: red;
+        }
+    </style>
+    <script type="text/javascript" src="comlib.js"></script>
+</head>
+
+<body>
+    <table id="scorelist" border="1">
+        <tr>
+            <td colspan="10">學生成績測試資料產生</td>
+        </tr>
+        <tr>
+            <td>姓名</td>
+            <td>國文</td>
+            <td>英文</td>
+            <td>數學</td>
+            <td>計算機概論</td>
+            <td>工廠實習</td>
+            <td>微積分</td>
+            <td>體育</td>
+            <td>平時成績</td>
+            <td>排名</td>
+        </tr>
+    </table>
+    <script type="text/javascript">
+        var student = new Array();
+        var sum = new Array();
+        // var fail = new Array(0,0,0,0,0,0,0)
+        // var scoreSheet =new Array();
+        // for(let i=0;i<30;i++){
+        //     scoreSheet.push(Array(rand(1,100),rand(1,100),rand(1,100),rand(1,100),rand(1,100),rand(1,100))
+        // )}
+        // for(let j=1;j<=7;j++){
+        //     if(scoreSheet[i][j]<60){
+        //         fail[j-1]++;
+        //     }
+        // }
+        for (let i = 1; i <= 31; i++) {
+            var lastRow = document.getElementById("scorelist").rows.length;
+            var tableTr = document.getElementById("scorelist").insertRow(lastRow);
+            var td = tableTr.insertCell(tableTr.cells.length);
+            if (i <= 30) {
+                td.innerHTML = "student" + i;
+            } else {
+                td.innerHTML = "不及格";
+            }
+            sum[i] = 0;
+            for (let j = 1; j <= 9; j++) {
+                td = tableTr.insertCell(tableTr.cells.length);
+                student[i] = rand(1, 100);
+                if (i <= 30) {
+                    if (j < 8) {
+                        td.innerHTML = student[i];
+                        sum[i] = sum[i] + student[i];
+                        if (td.innerHTML < 60 && j != 9 && i != 31) {
+                            td.classList.add('redT')
+                        } else if (td.innerHTML > 90 && j != 9 && i != 31) {
+                            td.classList.add('greenT')
+                        }
+                    } else if (j == 8) {
+                        td.innerHTML = (sum[i] / 7).toFixed(2);
+                    } else {
+                        td.innerHTML = sum[i];
+                    }
+                } else {
+                    if (j = 1) {
+                        for(let j=1;j<=7;j++){
+                            if(scoreSheet[i][j]<60){
+                                fail[j-1]++;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        console.log(student);
+    </script>
+</body>
+
+</html>
