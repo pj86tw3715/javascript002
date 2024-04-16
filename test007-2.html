@@ -67,6 +67,7 @@
                 if (scoreSheet[i][j] < 60) {
                     fail[j - 1]++;
                 }
+                statistics[j - 1][scoreAssign(scoreSheet[i][j])]++;//計算各科成績累加
                 j++;
                 stotal = stotal + scoreSheet[i][j];//總分累加
             } while (j <= 7);
@@ -160,36 +161,37 @@
         td = tableTr.insertCell(tableTr.cells.length);
         td.innerHTML = "--";
         //設定成績分布在那個陣列區段功能函數
-        // function scoreAssign(data = 0) {
-        //     if (data == 100) {
-        //         return (10);
-        //     } else if (data >= 90) {
-        //         return (9);
-        //     } else if (data >= 80) {
-        //         return (8);
-        //     } else if (data >= 70) {
-        //         return (7);
-        //     } else if (data >= 60) {
-        //         return (6);
-        //     } else if (data >= 50) {
-        //         return (5);
-        //     } else if (data >= 40) {
-        //         return (4);
-        //     } else if (data >= 30) {
-        //         return (3);
-        //     } else if (data >= 20) {
-        //         return (2);
-        //     } else if (data >= 10) {
-        //         return (1);
-        //     } else {
-        //         return (0);
-        //     }
-        // }
+        function scoreAssign(data = 0) {
+            if (data == 100) {
+                return (10);
+            } else if (data >= 90) {
+                return (9);
+            } else if (data >= 80) {
+                return (8);
+            } else if (data >= 70) {
+                return (7);
+            } else if (data >= 60) {
+                return (6);
+            } else if (data >= 50) {
+                return (5);
+            } else if (data >= 40) {
+                return (4);
+            } else if (data >= 30) {
+                return (3);
+            } else if (data >= 20) {
+                return (2);
+            } else if (data >= 10) {
+                return (1);
+            } else {
+                return (0);
+            }
+        }
 
     </script>
     <script type="text/javascript">
         // 設定echarts要顯示對應的div元件id=main 
         var myChart = echarts.init(document.getElementById('main'));
+        var myChart1 = echarts.init(document.getElementById('main1'));
         var clist = ['國文', '英文', '數學', '計算機概論', '工廠實習', '微積分', '體育'];
         // 以下是圖表所有顯示的方式與格式
         var option = {
@@ -233,82 +235,83 @@
                 }
             ]
         };
-        // var option1 = {
-        //     title: {
-        //         text: '各科成績分布圖'
-        //     },
-        //     tooltip: {
-        //         trigger: 'axis'
-        //     },
-        //     legend: {
-        //         data: clist
-        //     },
-        //     grid: {
-        //         left: '3%',
-        //         right: '4%',
-        //         bottom: '3%',
-        //         containLabel: true
-        //     },
-        //     toolbox: {
-        //         feature: {
-        //             saveAsImage: {}
-        //         }
-        //     },
-        //     xAxis: {
-        //         type: 'category',
-        //         boundaryGap: false,
-        //         data: ['0-9', '10-19', '20-29', '30-39', '40-49', '50-59', '60-69', '70-79', '80-89', '90-99', '100']
-        //     },
-        //     yAxis: {
-        //         type: 'value'
-        //     },
-        //     series: [
-        //         {
-        //             name: 'clist[0]',
-        //             type: 'line',
-        //             stack: 'Total',
-        //             data: statistics[0]
-        //         },
-        //         {
-        //             name: 'clist[1]',
-        //             type: 'line',
-        //             stack: 'Total',
-        //             data: statistics[1]
-        //         },
-        //         {
-        //             name: 'clist[2]',
-        //             type: 'line',
-        //             stack: 'Total',
-        //             data: statistics[2]
-        //         },
-        //         {
-        //             name: 'clist[3]',
-        //             type: 'line',
-        //             stack: 'Total',
-        //             data: statistics[3]
-        //         },
-        //         {
-        //             name: 'clist[4]',
-        //             type: 'line',
-        //             stack: 'Total',
-        //             data: statistics[4]
-        //         },
-        //         {
-        //             name: 'clist[5]',
-        //             type: 'line',
-        //             stack: 'Total',
-        //             data: statistics[5]
-        //         },
-        //         {
-        //             name: 'clist[6]',
-        //             type: 'line',
-        //             stack: 'Total',
-        //             data: statistics[6]
-        //         }
-        //     ]
-        // };
-        // // 使用刚指定的配置项和数据显示图表。
+        var option1 = {
+            title: {
+                text: '各科成績分布圖'
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                data: clist
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            toolbox: {
+                feature: {
+                    saveAsImage: {}
+                }
+            },
+            xAxis: {
+                type: 'category',
+                boundaryGap: false,
+                data: ['0-9', '10-19', '20-29', '30-39', '40-49', '50-59', '60-69', '70-79', '80-89', '90-99', '100']
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: [
+                {
+                    name: 'clist[0]',
+                    type: 'line',
+                    stack: 'Total',
+                    data: statistics[0]
+                },
+                {
+                    name: 'clist[1]',
+                    type: 'line',
+                    stack: 'Total',
+                    data: statistics[1]
+                },
+                {
+                    name: 'clist[2]',
+                    type: 'line',
+                    stack: 'Total',
+                    data: statistics[2]
+                },
+                {
+                    name: 'clist[3]',
+                    type: 'line',
+                    stack: 'Total',
+                    data: statistics[3]
+                },
+                {
+                    name: 'clist[4]',
+                    type: 'line',
+                    stack: 'Total',
+                    data: statistics[4]
+                },
+                {
+                    name: 'clist[5]',
+                    type: 'line',
+                    stack: 'Total',
+                    data: statistics[5]
+                },
+                {
+                    name: 'clist[6]',
+                    type: 'line',
+                    stack: 'Total',
+                    data: statistics[6]
+                }
+            ]
+        };
+        // 使用刚指定的配置项和数据显示图表。
         myChart.setOption(option);
+        myChart1.setOption(option1);
     </script>
 </body>
 
