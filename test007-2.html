@@ -50,6 +50,7 @@
     <div id="main" style="width: 800px;height:600px;"></div>
     <div id="main1" style="width: 800px;height:600px;"></div>
     <div id="main2" style="width: 800px;height:600px;"></div>
+    <div id="main3" style="width: 800px;height:600px;"></div>
     <script type="text/javascript">
         var scoreSheet = new Array(); //學生成績冊陣列
         var fail = new Array(0, 0, 0, 0, 0, 0, 0); //儲存不及格的人數（七個科目）
@@ -84,7 +85,7 @@
             // 計算平均成績
             var avg = stotal / 7;
             scoreSheet[i][8] = avg.toFixed(2); //取到小數第二位
-            
+
 
 
             //第一種寫法
@@ -106,10 +107,10 @@
             rankArray.push(avg.toFixed(2));
         }
         for (let i = 0; i < 30; i++) {
-                average[scoreAssign(scoreSheet[i][8])];
-                console.log(scoreSheet[i][8]);
-            }
-console.log(average);
+            average[scoreAssign(scoreSheet[i][8])];
+            console.log(scoreSheet[i][8]);
+        }
+        console.log(average);
         rankArray.sort(function (a, b) { return b - a; });
         //平均成績排序，由大到小，分數越高，排名越前面
         for (let i = 0; i < 30; i++) {
@@ -193,15 +194,15 @@ console.log(average);
             }
         }
         for (let i = 0; i < 30; i++) {
-                average[scoreAssign(scoreSheet[i][8])]++;
-                console.log(scoreSheet[i][8]);
-            }
+            average[scoreAssign(scoreSheet[i][8])]++;
+        }
     </script>
     <script type="text/javascript">
         // 設定echarts要顯示對應的div元件id=main 
         var myChart = echarts.init(document.getElementById('main'));
         var myChart1 = echarts.init(document.getElementById('main1'));
         var myChart2 = echarts.init(document.getElementById('main2'));
+        var myChart3 = echarts.init(document.getElementById('main3'));
         var clist = ['國文', '英文', '數學', '計算機概論', '工廠實習', '微積分', '體育'];
         // 以下是圖表所有顯示的方式與格式
         var option = {
@@ -347,9 +348,7 @@ console.log(average);
                         { value: average[7], name: '70-79' },
                         { value: average[8], name: '80-89' },
                         { value: average[9], name: '90-99' },
-                        { value: average[10], name: '100' },
-
-
+                        { value: average[10], name: '100' }
                     ],
                     emphasis: {
                         itemStyle: {
@@ -362,9 +361,49 @@ console.log(average);
             ]
         };
         // 使用刚指定的配置项和数据显示图表。
+        var option3 = {
+            legend: {
+                top: 'bottom'
+            },
+            toolbox: {
+                show: true,
+                feature: {
+                    mark: { show: true },
+                    dataView: { show: true, readOnly: false },
+                    restore: { show: true },
+                    saveAsImage: { show: true }
+                }
+            },
+            series: [
+                {
+                    name: '全班平均成績分布圖',
+                    type: 'pie',
+                    radius: [50, 250],
+                    center: ['50%', '50%'],
+                    roseType: 'area',
+                    itemStyle: {
+                        borderRadius: 8
+                    },
+                    data: [
+                    { value: average[0], name: '0-9' },
+                        { value: average[1], name: '10-19' },
+                        { value: average[2], name: '20-29' },
+                        { value: average[3], name: '30-39' },
+                        { value: average[4], name: '40-49' },
+                        { value: average[5], name: '50-59' },
+                        { value: average[6], name: '60-69' },
+                        { value: average[7], name: '70-79' },
+                        { value: average[8], name: '80-89' },
+                        { value: average[9], name: '90-99' },
+                        { value: average[10], name: '100' }
+                    ]
+                }
+            ]
+        };
         myChart.setOption(option);
         myChart1.setOption(option1);
         myChart2.setOption(option2);
+        myChart3.setOption(option3);
     </script>
 </body>
 
