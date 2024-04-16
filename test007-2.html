@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>學生成績測試資料產生</title>
+    <style type="text/css">
+        table {
+            text-align: center;
+        }
+
+        .down60 {
+            color: red;
+        }
+
+        .up90 {
+            color: green;
+        }
+
+        .up95 {
+            color: green;
+            font-weight: bolder;
+        }
+    </style>
+    <script type="text/javascript" src="comlib.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"
+        integrity="sha256-QvgynZibb2U53SsVu98NggJXYqwRL7tg3FeyfXvPOUY=" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <table id="scorelist" border="1">
+        <tr>
+            <td colspan="10">學生成績測試資料產生</td><!-- colspan合併儲存格 -->
+        </tr>
+        <tr>
+            <td>姓名</td>
+            <td>國文</td>
+            <td>英文</td>
+            <td>數學</td>
+            <td>計算機概論</td>
+            <td>工廠實習</td>
+            <td>微積分</td>
+            <td>體育</td>
+            <td>平均成績</td>
+            <td>排名</td>
+        </tr>
+    </table>
+    <hr>
+    <div id="main" style="width: 800px;height:600px;"></div>
+    <div id="main1" style="width: 800px;height:600px;"></div>
+    <script type="text/javascript">
+        var scoreSheet = new Array(); //學生成績冊陣列
+        var fail = new Array(0, 0, 0, 0, 0, 0, 0); //儲存不及格的人數（七個科目）
+        var rankArray = new Array();      //儲存排名平均成績        
+        var statistics = new Array(); // 統計各科成績成績分布陣列
+
+        for (let i = 0; i <= 6; i++) {
+            statistics[i] = new Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+        }//預設各科成績區段人數為0開始
+        //產生學生成績並且計算不及格人數
+        for (let i = 0; i < 30; i++) {
+            scoreSheet.push(Array("student" + (i + 1), rand(1, 100), rand(1, 100), rand(1, 100), rand(1, 100), rand(1, 100), rand(1, 100), rand(1, 100), 0, 0))
+            var stotal = 0;//成績累加變數
+            let j = 1;
+            do { //用來計算7科不及格人數
+                if (scoreSheet[i][j] < 60) {
+                    fail[j - 1]++;
+                }
+                j++;
+                stotal = stotal + scoreSheet[i][j];//總分累加
+            } while (j <= 7);
+            // for (let j = i; j <= 7; j++) {
+            //     if (scoreSheet[i][j] < 60) {
+            //         fail[j - 1]++;
+            //     }
+            //     statistics[j - 1][scoreAssign(scoreSheet[i][j])]++;//計算各科成績累加
+            //     stotal = stotal + scoreSheet[i][j];//總分累加
+            // }
+            // 計算平均成績
+            var avg = stotal / 7;
+            scoreSheet[i][8] = avg.toFixed(2); //取到小數第二位
+
+
+
+
+            //第一種寫法
+            // for (let j = 1; j <= 7; j++) {    //用來計算7科不及格人數
+            //     if (scoreSheet[i][j] < 60) {
+            //         fail[j - 1]++;
+            //     }
+            // }
+
+            //第二種寫法
+            //     let j = 1;
+            //     do {                   //用來計算7科不及格人數
+            //         if (scoreSheet[i][j] < 60) {
+            //             fail[j - 1]++;
+            //         }
+            //         j++;
+            //     } while (j <= 7);
+            //排名
+            rankArray.push(avg.toFixed(2));
+        }
+        rankArray.sort(function (a, b) { return b - a; });
+        //平均成績排序，由大到小，分數越高，排名越前面
+        for (let i = 0; i < 30; i++) {
+            scoreSheet[i][9] = rankArray.indexOf(scoreSheet[i][8]) + 1;
+            //從頭比對30成績，使用indexOf()陣列索引看平均成績落在第幾名;
+        }
+
+
+        console.log(scoreSheet); //可查詢陣列值
+        console.log(fail);
+
+        for (let i = 0; i < 30; i++) {
+            var lastRow = document.getElementById("scorelist").rows.length;  //取得表格列總列數
+            var tableTr = document.getElementById("scorelist").insertRow(lastRow);//新增一列
+
+            for (let j = 0; j <= 9; j++) {
+
+                td = tableTr.insertCell(tableTr.cells.length); //在新列新增一欄TD
+                td.innerHTML = scoreSheet[i][j];//輸出學生成績冊所有資料
+
+
+
+                if (scoreSheet[i][j] < 60) {
+                    td.setAttribute("class", "down60");
+                }
+                else if (scoreSheet[i][j] >= 90 && scoreSheet[i][j] < 95) {
+                    td.setAttribute("class", "up90");
+                }
+                else if (scoreSheet[i][j] >= 95) {
+                    td.setAttribute("class", "up95");
+                    td.innerHTML = "*" + scoreSheet[i][j];
+                }
+
+            }
+        }
+        // for (let i = 1; i <= 29; i++) {
+        //     for (let j = 0; j <= 7; j++) {
+        //         sum = 0
+        //         sum+=scoreSheet[i][j]
+        //         scoreSheet[i][8] = sum; // 將總分存儲在該學生成績的第9個位置
+        //         scoreSheet[i][9] = sum / 7; // 將平均分存儲在該學生成績的第10個位置
+        //     }}
+        // 下列不及格小計的處理
+        var lastRow = document.getElementById("scorelist").rows.length;
+        var tableTr = document.getElementById("scorelist").insertRow(lastRow);
+        td = tableTr.insertCell(tableTr.cells.length);
+        td.innerHTML = "不及格小計";
+        let i = 0;
+        while (i < 7) {
+            td = tableTr.insertCell(tableTr.cells.length);
+            td.innerHTML = fail[i];
+            i++;
+        }
+        td = tableTr.insertCell(tableTr.cells.length);
+        td.innerHTML = "--";
+        td = tableTr.insertCell(tableTr.cells.length);
+        td.innerHTML = "--";
+        //設定成績分布在那個陣列區段功能函數
+        // function scoreAssign(data = 0) {
+        //     if (data == 100) {
+        //         return (10);
+        //     } else if (data >= 90) {
+        //         return (9);
+        //     } else if (data >= 80) {
+        //         return (8);
+        //     } else if (data >= 70) {
+        //         return (7);
+        //     } else if (data >= 60) {
+        //         return (6);
+        //     } else if (data >= 50) {
+        //         return (5);
+        //     } else if (data >= 40) {
+        //         return (4);
+        //     } else if (data >= 30) {
+        //         return (3);
+        //     } else if (data >= 20) {
+        //         return (2);
+        //     } else if (data >= 10) {
+        //         return (1);
+        //     } else {
+        //         return (0);
+        //     }
+        // }
+
+    </script>
+    <script type="text/javascript">
+        // 設定echarts要顯示對應的div元件id=main 
+        var myChart = echarts.init(document.getElementById('main'));
+        var clist = ['國文', '英文', '數學', '計算機概論', '工廠實習', '微積分', '體育'];
+        // 以下是圖表所有顯示的方式與格式
+        var option = {
+            title: {
+                text: '班級成績統計圖'
+            },
+            tooltip: {},
+            legend: {
+                data: ['不及格人數']
+            },
+            xAxis: {
+                data: clist,
+            },
+            yAxis: {},
+            series: [
+                {
+                    name: '不及格人數',
+                    type: 'bar',
+                    data: [{
+                        value: fail[0],
+                        itemStyle: { color: '#5470c6' }
+                    }, {
+                        value: fail[1],
+                        itemStyle: { color: '#91cc75' }
+                    }, {
+                        value: fail[2],
+                        itemStyle: { color: '#fac858' }
+                    }, {
+                        value: fail[3],
+                        itemStyle: { color: '#ee6666' }
+                    }, {
+                        value: fail[4],
+                        itemStyle: { color: '#73c0de' }
+                    }, {
+                        value: fail[5],
+                        itemStyle: { color: '#3ba272' }
+                    }, {
+                        value: fail[6],
+                        itemStyle: { color: '#fc8452' }
+                    }]
+                }
+            ]
+        };
+        // var option1 = {
+        //     title: {
+        //         text: '各科成績分布圖'
+        //     },
+        //     tooltip: {
+        //         trigger: 'axis'
+        //     },
+        //     legend: {
+        //         data: clist
+        //     },
+        //     grid: {
+        //         left: '3%',
+        //         right: '4%',
+        //         bottom: '3%',
+        //         containLabel: true
+        //     },
+        //     toolbox: {
+        //         feature: {
+        //             saveAsImage: {}
+        //         }
+        //     },
+        //     xAxis: {
+        //         type: 'category',
+        //         boundaryGap: false,
+        //         data: ['0-9', '10-19', '20-29', '30-39', '40-49', '50-59', '60-69', '70-79', '80-89', '90-99', '100']
+        //     },
+        //     yAxis: {
+        //         type: 'value'
+        //     },
+        //     series: [
+        //         {
+        //             name: 'clist[0]',
+        //             type: 'line',
+        //             stack: 'Total',
+        //             data: statistics[0]
+        //         },
+        //         {
+        //             name: 'clist[1]',
+        //             type: 'line',
+        //             stack: 'Total',
+        //             data: statistics[1]
+        //         },
+        //         {
+        //             name: 'clist[2]',
+        //             type: 'line',
+        //             stack: 'Total',
+        //             data: statistics[2]
+        //         },
+        //         {
+        //             name: 'clist[3]',
+        //             type: 'line',
+        //             stack: 'Total',
+        //             data: statistics[3]
+        //         },
+        //         {
+        //             name: 'clist[4]',
+        //             type: 'line',
+        //             stack: 'Total',
+        //             data: statistics[4]
+        //         },
+        //         {
+        //             name: 'clist[5]',
+        //             type: 'line',
+        //             stack: 'Total',
+        //             data: statistics[5]
+        //         },
+        //         {
+        //             name: 'clist[6]',
+        //             type: 'line',
+        //             stack: 'Total',
+        //             data: statistics[6]
+        //         }
+        //     ]
+        // };
+        // // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+    </script>
+</body>
+
+</html>
