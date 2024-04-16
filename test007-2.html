@@ -55,10 +55,12 @@
         var fail = new Array(0, 0, 0, 0, 0, 0, 0); //儲存不及格的人數（七個科目）
         var rankArray = new Array();      //儲存排名平均成績        
         var statistics = new Array(); // 統計各科成績成績分布陣列
+        var average = new Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0); // 統計各科成績成績分布陣列
 
         for (let i = 0; i <= 6; i++) {
             statistics[i] = new Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
         }//預設各科成績區段人數為0開始
+
         //產生學生成績並且計算不及格人數
         for (let i = 0; i < 30; i++) {
             scoreSheet.push(Array("student" + (i + 1), rand(1, 100), rand(1, 100), rand(1, 100), rand(1, 100), rand(1, 100), rand(1, 100), rand(1, 100), 0, 0))
@@ -82,8 +84,7 @@
             // 計算平均成績
             var avg = stotal / 7;
             scoreSheet[i][8] = avg.toFixed(2); //取到小數第二位
-
-
+            
 
 
             //第一種寫法
@@ -104,6 +105,11 @@
             //排名
             rankArray.push(avg.toFixed(2));
         }
+        for (let i = 0; i < 30; i++) {
+                average[scoreAssign(scoreSheet[i][8])];
+                console.log(scoreSheet[i][8]);
+            }
+console.log(average);
         rankArray.sort(function (a, b) { return b - a; });
         //平均成績排序，由大到小，分數越高，排名越前面
         for (let i = 0; i < 30; i++) {
@@ -112,8 +118,7 @@
         }
 
 
-        console.log(scoreSheet); //可查詢陣列值
-        console.log(fail);
+        //可查詢陣列值
 
         for (let i = 0; i < 30; i++) {
             var lastRow = document.getElementById("scorelist").rows.length;  //取得表格列總列數
@@ -187,7 +192,10 @@
                 return (0);
             }
         }
-
+        for (let i = 0; i < 30; i++) {
+                average[scoreAssign(scoreSheet[i][8])]++;
+                console.log(scoreSheet[i][8]);
+            }
     </script>
     <script type="text/javascript">
         // 設定echarts要顯示對應的div元件id=main 
@@ -268,43 +276,43 @@
             },
             series: [
                 {
-                    name: 'clist[0]',
+                    name: clist[0],
                     type: 'line',
                     stack: 'Total',
                     data: statistics[0]
                 },
                 {
-                    name: 'clist[1]',
+                    name: clist[1],
                     type: 'line',
                     stack: 'Total',
                     data: statistics[1]
                 },
                 {
-                    name: 'clist[2]',
+                    name: clist[2],
                     type: 'line',
                     stack: 'Total',
                     data: statistics[2]
                 },
                 {
-                    name: 'clist[3]',
+                    name: clist[3],
                     type: 'line',
                     stack: 'Total',
                     data: statistics[3]
                 },
                 {
-                    name: 'clist[4]',
+                    name: clist[4],
                     type: 'line',
                     stack: 'Total',
                     data: statistics[4]
                 },
                 {
-                    name: 'clist[5]',
+                    name: clist[5],
                     type: 'line',
                     stack: 'Total',
                     data: statistics[5]
                 },
                 {
-                    name: 'clist[6]',
+                    name: clist[6],
                     type: 'line',
                     stack: 'Total',
                     data: statistics[6]
@@ -314,7 +322,6 @@
         var option2 = {
             title: {
                 text: '全班平均成績分布圖',
-                subtext: 'Fake Data',
                 left: 'center'
             },
             tooltip: {
@@ -330,11 +337,19 @@
                     type: 'pie',
                     radius: '50%',
                     data: [
-                        { value: 1048, name: 'Search Engine' },
-                        { value: 735, name: 'Direct' },
-                        { value: 580, name: 'Email' },
-                        { value: 484, name: 'Union Ads' },
-                        { value: 300, name: 'Video Ads' }
+                        { value: average[0], name: '0-9' },
+                        { value: average[1], name: '10-19' },
+                        { value: average[2], name: '20-29' },
+                        { value: average[3], name: '30-39' },
+                        { value: average[4], name: '40-49' },
+                        { value: average[5], name: '50-59' },
+                        { value: average[6], name: '60-69' },
+                        { value: average[7], name: '70-79' },
+                        { value: average[8], name: '80-89' },
+                        { value: average[9], name: '90-99' },
+                        { value: average[10], name: '100' },
+
+
                     ],
                     emphasis: {
                         itemStyle: {
