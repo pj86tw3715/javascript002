@@ -49,6 +49,7 @@
     <hr>
     <div id="main" style="width: 800px;height:600px;"></div>
     <div id="main1" style="width: 800px;height:600px;"></div>
+    <div id="main2" style="width: 800px;height:600px;"></div>
     <script type="text/javascript">
         var scoreSheet = new Array(); //學生成績冊陣列
         var fail = new Array(0, 0, 0, 0, 0, 0, 0); //儲存不及格的人數（七個科目）
@@ -192,6 +193,7 @@
         // 設定echarts要顯示對應的div元件id=main 
         var myChart = echarts.init(document.getElementById('main'));
         var myChart1 = echarts.init(document.getElementById('main1'));
+        var myChart2 = echarts.init(document.getElementById('main2'));
         var clist = ['國文', '英文', '數學', '計算機概論', '工廠實習', '微積分', '體育'];
         // 以下是圖表所有顯示的方式與格式
         var option = {
@@ -309,9 +311,45 @@
                 }
             ]
         };
+        var option2 = {
+            title: {
+                text: '全班平均成績分布圖',
+                subtext: 'Fake Data',
+                left: 'center'
+            },
+            tooltip: {
+                trigger: 'item'
+            },
+            legend: {
+                orient: 'vertical',
+                left: 'left'
+            },
+            series: [
+                {
+                    name: 'Access From',
+                    type: 'pie',
+                    radius: '50%',
+                    data: [
+                        { value: 1048, name: 'Search Engine' },
+                        { value: 735, name: 'Direct' },
+                        { value: 580, name: 'Email' },
+                        { value: 484, name: 'Union Ads' },
+                        { value: 300, name: 'Video Ads' }
+                    ],
+                    emphasis: {
+                        itemStyle: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }
+            ]
+        };
         // 使用刚指定的配置项和数据显示图表。
         myChart.setOption(option);
         myChart1.setOption(option1);
+        myChart2.setOption(option2);
     </script>
 </body>
 
