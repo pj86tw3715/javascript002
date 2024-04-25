@@ -206,7 +206,7 @@
                                     <td>
                                         <div class="form-check form-switch">
                                             <input type="checkbox" class="form-check-input" role="switch"
-                                                style="float:none;">
+                                                 style="float:none;">
                                             <label class="form-check-label">啟動</label>
                                         </div>
                                     </td>
@@ -365,7 +365,7 @@
                 td = tableTr.insertCell(tableTr.cells.length);
                 td.innerHTML = addZero(timerObject[i].hour) + ":" + addZero(timerObject[i].minutes);
                 td = tableTr.insertCell(tableTr.cells.length);
-                td.innerHTML = '<div class="form-check form-switch"><input class="form-check-input"type="checkbox"role="switch"' + timerObject[i].enable + 'style="float:none; onchange="chgSwitch(' + i + ')"><label class="form-check-label">啟動</label></div>';
+                td.innerHTML = '<div class="form-check form-switch"><input class="form-check-input"type="checkbox"role="switch"' + timerObject[i].enable + ' style="float:none; onchange="chgSwitch(' + i + ')"><label class="form-check-label">啟動</label></div>';
                 td = tableTr.insertCell(tableTr.cells.length);
                 td.innerHTML = '<button type="button" class = "btn btn-success" onclick="editTimer(' + i + ');">修改</button><button type="button" class="btn btn-danger" onclick ="delTimer(' + i + ');">刪除</button>'
             }
