@@ -261,12 +261,12 @@
             document.getElementsByName("title")[0].style.color = "#0ff";
             clockUpdate();
             interval = setInterval(clockUpdate, 1000);
-            timerObject =getCookie(key);
+            timerObject = getCookie(key);
         }
-        const myModal= document.getElementById('exampleModal')
-        myModal.addEventListener('shown.bs.modal',()=>{
-            timerUpdate=false;
-            document.getElementById("addBtn").innerHTML="新增";
+        const myModal = document.getElementById('exampleModal')
+        myModal.addEventListener('shown.bs.modal', () => {
+            timerUpdate = false;
+            document.getElementById("addBtn").innerHTML = "新增";
             updateTimerForm();
             resrtForm();
         });
@@ -278,6 +278,17 @@
             var s = addZero(date.getSeconds());
             var m = addZero(date.getMinutes());
             var h = addZero(date.getHours());
+
+            if (timerObject.length != 0) {
+                var audio = Audio('beep.mp3');
+                for (i = 0; i < timerObject.length; i++) {
+                    if (timerObject[i].hour == h && timerObject[i].minutes == m) {
+                        audio.play();
+                        let startAlarm = document.getElementById("bsIcon");
+                        startAlarm.style.display = "inline";
+                    }
+                }
+            }
 
             if (timeFormat == 12) {
                 var h = addZero(twelveHour(date.getHours()));
@@ -300,6 +311,45 @@
 
             document.getElementsByName("title")[0].innerText = dateString;
         }
+
+        function clearTimer(){
+            if(window.confirm("確認清除所有鬧鐘設定")){
+                deleteCookie(key);
+                timerObject=new Array();
+                updateIndex();
+                resrtForm();
+            }
+            return;
+        }
+
+        function chgSwitch(i){
+            if(timerObject[i].enable=='checked'){
+                timerObject[i].enable='';
+            }else{
+                timerObject[i].enable='checked';
+            }
+            setCookie(key,timerObject,30);
+        }
+
+        function delTimer(i){
+            if(window.confirm("確認刪除"+timerObject[i].remark+"鬧鐘設定")){
+                timerObject.splice(i,1);
+                setCookie(key,timerObject,30);
+                updateTimerForm();
+            }
+            return
+        }
+
+        function editTimer(i) {
+            let timerForm1 = document.forms["timerForm1"];
+            timerForm1.elements.remark.value = timerObject[i].remark;
+            timerForm1.elements.hour.value = timerObject[i].hour;
+            timerForm1.elements.minutes.value = timerObject[i].minutes
+            updateIndex = i;
+            timerUpdate = true;
+            document.getElementById("addBtn").innerHTML = "儲存";
+        }
+
         //顯示鬧鐘設定表數據
         function updateTimerForm() {
             let clearTbody = document.getElementById("tbodyId");
@@ -315,91 +365,91 @@
                 td = tableTr.insertCell(tableTr.cells.length);
                 td.innerHTML = addZero(timerObject[i].hour) + ":" + addZero(timerObject[i].minutes);
                 td = tableTr.insertCell(tableTr.cells.length);
-               td.innerHTML='<div class="form-check form-switch"><input class="form-check-input"type="checkbox"role="switch"'+timerObject[i].enable+'style="float:none; onchange="chgSwitch('+i+')"><label class="form-check-label">啟動</label></div>';
-               td =tableTr.insertCell(tableTr.cells.length);
-               td.innerHTML='<button type="button" class = "btn btn-success" onclick="editTimer('+i+');">修改</button><button type="button" class="btn btn-danger" onclick ="delTimer('+i+');">刪除</button>'
+                td.innerHTML = '<div class="form-check form-switch"><input class="form-check-input"type="checkbox"role="switch"' + timerObject[i].enable + 'style="float:none; onchange="chgSwitch(' + i + ')"><label class="form-check-label">啟動</label></div>';
+                td = tableTr.insertCell(tableTr.cells.length);
+                td.innerHTML = '<button type="button" class = "btn btn-success" onclick="editTimer(' + i + ');">修改</button><button type="button" class="btn btn-danger" onclick ="delTimer(' + i + ');">刪除</button>'
             }
-}
+        }
 
-            function resrtForm(){
-                let timerForm1=document.forms["timerForm1"];
-                timerForm1.reset();
-            }
+        function resrtForm() {
+            let timerForm1 = document.forms["timerForm1"];
+            timerForm1.reset();
+        }
 
-            function appendTimer() {
-                let timerForm1 = document.forms["timerForm1"];
-                let timerRemark = timerForm1.elements.remark.value;
-                let timerHour = parseInt(timerForm1.elements.hour.value);
-                let timerMinutes = parseInt(timerForm1.elements.minutes.value);
-                if (timerRemark == "" || isNaN(timerHour) || isNaN(timerMinutes)) {
-                    alert("需選擇設定備註、時間、或格式有錯誤。");
-                    return false;
-                }
-                if (!timerUpdate) {
-                    let id = 1;
-                    if (timerObject.length == 0) {
-                        timerObject = [{ id: id, remark: timerRemark, hour: timerHour, minutes: timerMinutes, enable: 'checked' }];
-                    } else {
-                        id = Math.max(...timerObject.map(p => p.id)) + 1;
-                        timerObject.push({ id: id, remark: timerRemark, hour: timerHour, minutes: timerMinutes, enable: 'checked' });
-                    }
+        function appendTimer() {
+            let timerForm1 = document.forms["timerForm1"];
+            let timerRemark = timerForm1.elements.remark.value;
+            let timerHour = parseInt(timerForm1.elements.hour.value);
+            let timerMinutes = parseInt(timerForm1.elements.minutes.value);
+            if (timerRemark == "" || isNaN(timerHour) || isNaN(timerMinutes)) {
+                alert("需選擇設定備註、時間、或格式有錯誤。");
+                return false;
+            }
+            if (!timerUpdate) {
+                let id = 1;
+                if (timerObject.length == 0) {
+                    timerObject = [{ id: id, remark: timerRemark, hour: timerHour, minutes: timerMinutes, enable: 'checked' }];
                 } else {
-                    timerObject[updateIndex] = { id: timerObject[updateIndex].id, remark: timerRemark, hour: timerHour, minutes: timerMinutes, enable: timerObject[updateIndex].enable };
-                    timerUpdate = false;
-                    document.getElementById("addBtn").innerHTML = "新增";
+                    id = Math.max(...timerObject.map(p => p.id)) + 1;
+                    timerObject.push({ id: id, remark: timerRemark, hour: timerHour, minutes: timerMinutes, enable: 'checked' });
                 }
-                setCookie(key, timerObject, 30);
-                updateTimerForm();
-                resrtForm();
+            } else {
+                timerObject[updateIndex] = { id: timerObject[updateIndex].id, remark: timerRemark, hour: timerHour, minutes: timerMinutes, enable: timerObject[updateIndex].enable };
+                timerUpdate = false;
+                document.getElementById("addBtn").innerHTML = "新增";
             }
-            function chgFormat() {
-                if (timeFormat == 12) {
-                    timeFormat = 24;
-                    document.getElementsByClassName("btn-primary")[0].innerText = "12時制更換";
-                } else {
-                    timeFormat = 12;
-                    document.getElementsByClassName("btn-primary")[0].innerText = "24時制更換"
-                }
+            setCookie(key, timerObject, 30);
+            updateTimerForm();
+            resrtForm();
+        }
+        function chgFormat() {
+            if (timeFormat == 12) {
+                timeFormat = 24;
+                document.getElementsByClassName("btn-primary")[0].innerText = "12時制更換";
+            } else {
+                timeFormat = 12;
+                document.getElementsByClassName("btn-primary")[0].innerText = "24時制更換"
             }
-            function twelveHour(hour) {
-                return ((hour > 12) ? hour - 12 : hour);
+        }
+        function twelveHour(hour) {
+            return ((hour > 12) ? hour - 12 : hour);
+        }
+        function timeStop() {
+            if (interval != 0) {
+                clearInterval(interval);
+                interval = 0;
+                document.getElementsByClassName("btn-success")[0].innerText = "啟動"
+            } else {
+                interval = setInterval(clockUpdate, 1000);
+                document.getElementsByClassName("btn-success")[0].innerText = "停止"
             }
-            function timeStop() {
-                if (interval != 0) {
-                    clearInterval(interval);
-                    interval = 0;
-                    document.getElementsByClassName("btn-success")[0].innerText = "啟動"
-                } else {
-                    interval = setInterval(clockUpdate, 1000);
-                    document.getElementsByClassName("btn-success")[0].innerText = "停止"
-                }
+        }
+        function showDate() {
+            if (dateHide) {
+                dateHide = false;
+                document.getElementsByClassName("btn-warning")[0].innerText = "顯示日期標題";
+                document.getElementsByName("title")[0].style.display = "none";
+            } else {
+                dateHide = true;
+                document.getElementsByClassName("btn-warning")[0].innerText = "應藏日期標題";
+                document.getElementsByName("title")[0].style.display = "block";
             }
-            function showDate() {
-                if (dateHide) {
-                    dateHide = false;
-                    document.getElementsByClassName("btn-warning")[0].innerText = "顯示日期標題";
-                    document.getElementsByName("title")[0].style.display = "none";
-                } else {
-                    dateHide = true;
-                    document.getElementsByClassName("btn-warning")[0].innerText = "應藏日期標題";
-                    document.getElementsByName("title")[0].style.display = "block";
-                }
+        }
+        function chgCdate() {
+            if (cdate) {
+                cdate = false;
+                document.getElementsByClassName("btn-info")[0].innerText = "變更民國日期標題";
+            } else {
+                cdate = true;
+                document.getElementsByClassName("btn-info")[0].innerText = "變更西元日期標題";
             }
-            function chgCdate() {
-                if (cdate) {
-                    cdate = false;
-                    document.getElementsByClassName("btn-info")[0].innerText = "變更民國日期標題";
-                } else {
-                    cdate = true;
-                    document.getElementsByClassName("btn-info")[0].innerText = "變更西元日期標題";
-                }
-            }
-            function chgBackground() {
-                var color1 = "rgb(" + rand(1, 255) + "," + rand(1, 255) + "," + rand(1, 255) + ")";
-                var color2 = "rgb(" + rand(1, 255) + "," + rand(1, 255) + "," + rand(1, 255) + ")";
-                var bgset = "background-image:radial-gradient(" + color1 + "," + color2 + ")";
-                document.getElementsByClassName("clockArea")[0].setAttribute('style', bgset);
-            }
+        }
+        function chgBackground() {
+            var color1 = "rgb(" + rand(1, 255) + "," + rand(1, 255) + "," + rand(1, 255) + ")";
+            var color2 = "rgb(" + rand(1, 255) + "," + rand(1, 255) + "," + rand(1, 255) + ")";
+            var bgset = "background-image:radial-gradient(" + color1 + "," + color2 + ")";
+            document.getElementsByClassName("clockArea")[0].setAttribute('style', bgset);
+        }
 
 
     </script>
