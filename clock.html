@@ -279,16 +279,16 @@
             var m = addZero(date.getMinutes());
             var h = addZero(date.getHours());
 
-            if (timerObject.length != 0) {
-                var audio = Audio('beep.mp3');
-                for (i = 0; i < timerObject.length; i++) {
-                    if (timerObject[i].hour == h && timerObject[i].minutes == m) {
-                        audio.play();
-                        let startAlarm = document.getElementById("bsIcon");
-                        startAlarm.style.display = "inline";
-                    }
-                }
-            }
+            // if (timerObject.length != 0) {
+            //     var audio = Audio('beep.mp3');
+            //     for (i = 0; i < timerObject.length; i++) {
+            //         if (timerObject[i].hour == h && timerObject[i].minutes == m) {
+            //             audio.play();
+            //             let startAlarm = document.getElementById("bsIcon");
+            //             startAlarm.style.display = "inline";
+            //         }
+            //     }
+            // }
 
             if (timeFormat == 12) {
                 var h = addZero(twelveHour(date.getHours()));
