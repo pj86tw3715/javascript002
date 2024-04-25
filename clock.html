@@ -284,16 +284,16 @@
             var m = addZero(date.getMinutes());
             var h = addZero(date.getHours());
             //判斷鬧鈴若有設定資料，則將所有鬧鈴設定進行時間比對
-            // if (timerObject.length != 0) {
-            //     var audio = Audio('beep.mp3');
-            //     for (i = 0; i < timerObject.length; i++) {
-            //         if (timerObject[i].hour == h && timerObject[i].minutes == m) {
-            //             audio.play();
-            //             let startAlarm = document.getElementById("bsIcon");
-            //             startAlarm.style.display = "inline";
-            //         }
-            //     }
-            // }
+            if (timerObject.length != 0) {
+                var audio = new Audio('alarm1.mp3');
+                for (i = 0; i < timerObject.length; i++) {
+                    if (timerObject[i].hour == h && timerObject[i].minutes == m) {
+                        audio.play();
+                        let startAlarm = document.getElementById("bsIcon");
+                        startAlarm.style.display = "inline";
+                    }
+                }
+            }
             //判斷12/24時制顯示方式
             if (timeFormat == 12) {
                 var h = addZero(twelveHour(date.getHours()));
