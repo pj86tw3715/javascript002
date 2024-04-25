@@ -65,12 +65,9 @@
         var ms = 0, s = 57, m = 9
         var start = false
         var time_GO
-        var intervalID = setInterval(function_name, 1000, 1000)
+        var intervalID = setInterval( 1000, 1000)
         document.getElementsByClassName("btn-success")[0].addEventListener("click", resetTimeHandler);
         document.getElementsByClassName("btn-danger")[0].addEventListener("click", chgBackground);
-        function function_name(number1, number2) {
-            console.log(number1, number2)
-        }
         button.addEventListener("click", function () {
             start = !start
             button.innerHTML = button.innerHTML === "停止" ? "繼續" : "停止"
@@ -81,6 +78,7 @@
             } else {
                 clearInterval(time_GO)
             }
+            chgBackground()
         })
         function time_go() {
             ms += 1
@@ -113,6 +111,7 @@
             }
             var times = document.getElementById("times")
             times.innerHTML = timetext
+
         }
 
         function resetTimeHandler() {
@@ -123,6 +122,8 @@
             timetext = addzero(ms)+':'+addzero(m)+':'+addzero(s);
             var times = document.getElementById("times")
             times.innerHTML = timetext
+            chgBackground()
+            
         }
 
         function chgBackground() {
