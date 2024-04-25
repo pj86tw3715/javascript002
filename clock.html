@@ -206,7 +206,7 @@
                                     <td>
                                         <div class="form-check form-switch">
                                             <input type="checkbox" class="form-check-input" role="switch"
-                                                 style="float:none;">
+                                                style="float:none;">
                                             <label class="form-check-label">啟動</label>
                                         </div>
                                     </td>
@@ -232,6 +232,7 @@
     <script type="text/javascript" src="./comlib.js"></script>
     <script type="text/javascript" src="./cookie.js"></script>
     <script type="text/javascript">
+        // 英文日曆對映資料陣列
         var months = [
             'January ', 'February ', 'March ', 'April ', 'May ', 'June ', 'July ', 'August ', 'September ', 'October ', 'November ', 'December '
         ];
@@ -241,20 +242,22 @@
         var cdays = [
             '星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'
         ];
-        var timeFormat = 12;
-        var interval;
-        var dateHide = true;
-        var cdate = false;
-        var timerObject = new Array();
-        var timerUpdate = false;
-        var updateIndex = 0;
-        var key = "timerCoolie";
+        var timeFormat = 12;// 12/24時制判斷變數，預設12小時制
+        var interval;// 設定time setInterval回傳的編號，可用以停止。
+        var dateHide = true;// 顯示/隱藏日期標題判斷變數，預設顯示
+        var cdate = false;// 顯示西元/民國日期標題判斷變數，預設西元日期
+        var timerObject = new Array();//閙鐘儲存陣列
+        var timerUpdate = false;//閙鐘資料新增/更新模式切換
+        var updateIndex = 0; //閙鐘資料陣列更新索引
+        var key = "timerCoolie";//cookie存取設定的KEY值
 
-        document.getElementsByClassName("btn-primary")[0].addEventListener("click", chgFormat);
-        document.getElementsByClassName("btn-success")[0].addEventListener("click", timeStop);
-        document.getElementsByClassName("btn-warning")[0].addEventListener("click", showDate);
-        document.getElementsByClassName("btn-info")[0].addEventListener("click", chgCdate);
-        document.getElementsByClassName("btn-danger")[0].addEventListener("click", chgBackground);
+        document.getElementsByClassName("btn-primary")[0].addEventListener("click", chgFormat);//建立12/24時制更換按鈕監聽
+
+        document.getElementsByClassName("btn-success")[0].addEventListener("click", timeStop);//設定系統時間的啟動/停用
+
+        document.getElementsByClassName("btn-warning")[0].addEventListener("click", showDate);//建立顯示/隱藏日期標題按鈕監聽
+        document.getElementsByClassName("btn-info")[0].addEventListener("click", chgCdate);//建立顯示西元/民國日期標題按鈕監聽
+        document.getElementsByClassName("btn-danger")[0].addEventListener("click", chgBackground);//建立變更背景顏色按鈕監聽
 
         document.getElementsByTagName('body')[0].onload = function () {
             document.getElementsByClassName("digital-clock")[0].setAttribute('style', "color:#fff;text-shadow:0 0 6px #ff0;");
@@ -263,6 +266,7 @@
             interval = setInterval(clockUpdate, 1000);
             timerObject = getCookie(key);
         }
+        //exampleModal被啟動後要執行的功能
         const myModal = document.getElementById('exampleModal')
         myModal.addEventListener('shown.bs.modal', () => {
             timerUpdate = false;
@@ -270,7 +274,8 @@
             updateTimerForm();
             resrtForm();
         });
-
+        //===以下系統功能函數===============
+        // 系統時間更新函數
         function clockUpdate() {
             var date = new Date();
             var day = date.getDate();
@@ -278,7 +283,7 @@
             var s = addZero(date.getSeconds());
             var m = addZero(date.getMinutes());
             var h = addZero(date.getHours());
-
+            //判斷鬧鈴若有設定資料，則將所有鬧鈴設定進行時間比對
             // if (timerObject.length != 0) {
             //     var audio = Audio('beep.mp3');
             //     for (i = 0; i < timerObject.length; i++) {
@@ -289,7 +294,7 @@
             //         }
             //     }
             // }
-
+            //判斷12/24時制顯示方式
             if (timeFormat == 12) {
                 var h = addZero(twelveHour(date.getHours()));
                 var formatStr = h + ":" + m + ":" + s + ((date.getHours() >= 12) ? "PM" : "AM");
@@ -311,35 +316,38 @@
 
             document.getElementsByName("title")[0].innerText = dateString;
         }
-
-        function clearTimer(){
-            if(window.confirm("確認清除所有鬧鐘設定")){
+        //清除所有鬧鐘設定
+        function clearTimer() {
+            if (window.confirm("確認清除所有鬧鐘設定")) {
                 deleteCookie(key);
-                timerObject=new Array();
+                timerObject = new Array();
                 updateTimerForm();
                 resrtForm();
             }
             return;
         }
-
-        function chgSwitch(i){
-            if(timerObject[i].enable=='checked'){
-                timerObject[i].enable='';
-            }else{
-                timerObject[i].enable='checked';
+        //鬧鈴設定資料啟動與停用
+        function chgSwitch(i) {
+            if (timerObject[i].enable == 'checked') {
+                timerObject[i].enable = '';
+            } else {
+                timerObject[i].enable = 'checked';
             }
-            setCookie(key,timerObject,30);
+            setCookie(key, timerObject, 30);
         }
-
-        function delTimer(i){
-            if(window.confirm("確認刪除"+timerObject[i].remark+"鬧鐘設定")){
-                timerObject.splice(i,1);
-                setCookie(key,timerObject,30);
+        //刪除鬧鈴設定資料，傳入陣列索引
+        function delTimer(i) {
+            if (window.confirm("確認刪除" + timerObject[i].remark + "鬧鐘設定")) {
+                timerObject.splice(i, 1);
+                setCookie(key, timerObject, 30);
+                timerUpdate = false;
+                document.getElementById("addBtn").innerHTML = "新增";
                 updateTimerForm();
+                resrtForm();
             }
-            return
+            return;
         }
-
+        //更改鬧鈴設定資料，傳入陣列索引
         function editTimer(i) {
             let timerForm1 = document.forms["timerForm1"];
             timerForm1.elements.remark.value = timerObject[i].remark;
@@ -371,11 +379,12 @@
             }
         }
 
+        //清除表單輸入資料
         function resrtForm() {
             let timerForm1 = document.forms["timerForm1"];
             timerForm1.reset();
         }
-
+        //閙鐘資料分新增與更新兩種模式
         function appendTimer() {
             let timerForm1 = document.forms["timerForm1"];
             let timerRemark = timerForm1.elements.remark.value;
@@ -386,14 +395,14 @@
                 return false;
             }
             if (!timerUpdate) {
-                let id = 1;
+                let id = 1;//鬧鐘資料新增模式
                 if (timerObject.length == 0) {
                     timerObject = [{ id: id, remark: timerRemark, hour: timerHour, minutes: timerMinutes, enable: 'checked' }];
                 } else {
                     id = Math.max(...timerObject.map(p => p.id)) + 1;
                     timerObject.push({ id: id, remark: timerRemark, hour: timerHour, minutes: timerMinutes, enable: 'checked' });
                 }
-            } else {
+            } else {//鬧鐘資料更新模式
                 timerObject[updateIndex] = { id: timerObject[updateIndex].id, remark: timerRemark, hour: timerHour, minutes: timerMinutes, enable: timerObject[updateIndex].enable };
                 timerUpdate = false;
                 document.getElementById("addBtn").innerHTML = "新增";
@@ -402,6 +411,7 @@
             updateTimerForm();
             resrtForm();
         }
+        // 12/24時制更換功能函數
         function chgFormat() {
             if (timeFormat == 12) {
                 timeFormat = 24;
@@ -411,6 +421,7 @@
                 document.getElementsByClassName("btn-primary")[0].innerText = "24時制更換"
             }
         }
+        // 12時制，HOUR大於12小時需進行轉換        
         function twelveHour(hour) {
             return ((hour > 12) ? hour - 12 : hour);
         }
